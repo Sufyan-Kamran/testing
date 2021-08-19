@@ -1,5 +1,5 @@
 import pymysql
-from collections import Counter
+import pandas as pd
 import csv
 
 con = pymysql.connect(host="localhost", user="root", password="", database="employee" )
@@ -49,21 +49,25 @@ for ro6 in row6:
     #items.append(asa)
     abc.append(c)
 print("Total lose of Defected itmes is : ","Rs",sum(abc))
-print(items)
-lst = items,abc
-import pandas as pd
-"""#df = pd.DataFrame(items)
-#df.to_csv('test.csv',index= False,header=False)
-with open('test.csv','w') as f:
-    for row in lst:
-        for x in row:
-            f.write(str(x)+',')
-        f.write('\n')
-
-print(abc)"""
-C = {'Programming language': items,
-        'Designed by': abc,
+"""
+C = {   'Sale': sums,
+        'QTY' : qty,
+        'Defected Items': items,
+        'Lose': abc,
+        
     }
-df = pd.DataFrame(C, columns= ['Programming language', 'Designed by', 'Appeared', 'Extension'])
-export_csv = df.to_csv (r'pandaresult.csv', index = None, header=True) # here you have to write path, where result file will be stored
+
+
+#df = pd.DataFrame(C, columns= ['Sale','QTY','Defected Items','Lose','most']).transpose()
+
+
+#export_csv = df.to_csv (r'pandaresult.csv' ,index = None, header=True) # here you have to write path, where result file will be stored
+df = pd.DataFrame.from_dict(C, orient='index', columns= ['Sale','QTY','Defected Items','Lose'])
+df = df.transpose()
+df.to_csv(r'hel.csv',index = None, header=True)"""
+a = {'Defected Items': items,'Lose': abc,}
+df = pd.DataFrame.from_dict(a, orient='index')
+df = df.transpose()
+print(df)
+df.to_csv(r'helo.csv')
 print (df)

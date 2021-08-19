@@ -1,7 +1,7 @@
 import pymysql
 import pandas as pd
 import csv
-
+totalSTk= []
 con = pymysql.connect(host="localhost", user="root", password="", database="employee" )
 cur = con.cursor()
 cur.execute("select * from orders")
@@ -49,6 +49,13 @@ for ro6 in row6:
     b = int(ro6[5])
     c = int(a * b)
     DEfecte.append(c)
+    items.append(c)
+cur2.execute("select * from products")
+row7 = cur2.fetchall()
+for r in row7:
+    print(r[4])
+    totalSTk.append(r[4])
+
 
 
     
@@ -59,6 +66,8 @@ for ro6 in row6:
     abc.append(c)
 ap = []
 ap.append(sum(DEfecte))
+totalstock = []
+totalstock.append(sum(totalSTk))
 print("Total lose of Defected itmes is : ","Rs",sum(abc))
 """
 C = {   'Sale': sums,
@@ -76,22 +85,10 @@ C = {   'Sale': sums,
 df = pd.DataFrame.from_dict(C, orient='index', columns= ['Sale','QTY','Defected Items','Lose'])
 df = df.transpose()
 df.to_csv(r'hel.csv',index = None, header=True)"""
-totalSTk= []
-cur2.execute("select * from products")
-row7 = cur2.fetchall()
-for r in row7:
-    print(r[4])
-    totalSTk.append(r[4])
-
-
-totalstock = []
-totalstock.append(sum(totalSTk))
-
-
-a = {'Defected Items': items,'Lose': abc,'Total Sale':totalsale,'Sale Item':totalqty,'Total Stock':totalstock,'Total Lose':ap,}
+a = {'Total Sale':totalsale,'Sale Item':totalqty,'Total Stock' : totalstock,'Total Lose':ap,'Defected Items':items,'Lose': abc,}
 df = pd.DataFrame.from_dict(a, orient='index')
 df = df.transpose()
 print(df)
 df.to_csv(r'helo.csv')
 print (df)
-print("defected item lose : ",sum(DEfecte))
+print(items)

@@ -28,38 +28,36 @@ cur2.execute("select MAX(QTY) AS maximum FROM orders limit 100")
 row3 = cur2.fetchall()
 for ro in row3:
     print(ro)
-
 cur2.execute("select Pname,QTY, COUNT(*) AS magnitude FROM orders GROUP BY QTY ORDER BY magnitude DESC LIMIT 100")
 row5 = cur2.fetchall()
 for ro4 in row5:
     print(ro4)
-
 cur2.execute("select * from products where Defected > 0 Limit 100000")
 row6 = cur2.fetchall()
 abc = []
 items = []
 DEfecte = []
-
 for ro6 in row6:
-
     i = 0
-    print("****************Defected******************\n")
-    print(ro6[1],ro6[2],ro6[3], ro6[5])
     a = int(ro6[2]) 
     b = int(ro6[5])
     c = int(a * b)
     DEfecte.append(c)
-
-
-    
-    
-    #print(ro6)
     items.append(ro6[1])
-    #items.append(asa)
     abc.append(c)
 ap = []
 ap.append(sum(DEfecte))
-print("Total lose of Defected itmes is : ","Rs",sum(abc))
+cur2.execute("select * from products")
+row9 = cur2.fetchall()
+PQTY = []
+PPRICE = []
+for ro9 in row9:
+    i = 0
+    a = int(ro9[2]) 
+    b = int(ro9[4])
+    c = int(a * b)
+    PPRICE.append(c)
+PQTY.append(sum(PPRICE))
 """
 C = {   'Sale': sums,
         'QTY' : qty,
@@ -82,13 +80,9 @@ row7 = cur2.fetchall()
 for r in row7:
     print(r[4])
     totalSTk.append(r[4])
-
-
 totalstock = []
 totalstock.append(sum(totalSTk))
-
-
-a = {'Defected Items': items,'Lose': abc,'Total Sale':totalsale,'Sale Item':totalqty,'Total Stock':totalstock,'Total Lose':ap,}
+a = {'Defected Items': items,'Lose': abc,'Total Sale':totalsale,'Sale Item':totalqty,'Total Stock':totalstock,'Total Stock Value': PQTY,'Total Lose':ap,}
 df = pd.DataFrame.from_dict(a, orient='index')
 df = df.transpose()
 print(df)

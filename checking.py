@@ -1,5 +1,6 @@
 import pymysql
 from collections import Counter
+import csv
 
 con = pymysql.connect(host="localhost", user="root", password="", database="employee" )
 cur = con.cursor()
@@ -32,7 +33,7 @@ for ro4 in row5:
 cur2.execute("select * from products where Defected > 0 Limit 100000")
 row6 = cur2.fetchall()
 abc = []
-
+items = []
 for ro6 in row6:
 
     i = 0
@@ -42,16 +43,27 @@ for ro6 in row6:
     b = int(ro6[5])
     c = int(a * b)
     print("defected item lose : ",a * b)
+    
     #print(ro6)
-
+    items.append(ro6[1])
+    #items.append(asa)
     abc.append(c)
+print("Total lose of Defected itmes is : ","Rs",sum(abc))
+print(items)
+lst = items,abc
+import pandas as pd
+"""#df = pd.DataFrame(items)
+#df.to_csv('test.csv',index= False,header=False)
+with open('test.csv','w') as f:
+    for row in lst:
+        for x in row:
+            f.write(str(x)+',')
+        f.write('\n')
 
-total = 0
-for i in range(0,len(abc)):
-    total = total + abc[i]
-
-print("Total lose of Defected itmes is : ",total)
-
-
-#with open("hellos.txt","w+") as fa:
-#    f = fa.write(f"hello{total}")
+print(abc)"""
+C = {'Programming language': items,
+        'Designed by': abc,
+    }
+df = pd.DataFrame(C, columns= ['Programming language', 'Designed by', 'Appeared', 'Extension'])
+export_csv = df.to_csv (r'pandaresult.csv', index = None, header=True) # here you have to write path, where result file will be stored
+print (df)
